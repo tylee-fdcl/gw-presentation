@@ -3,3 +3,15 @@ node_modules/
 __pycache__/
 *.pyc
 *-workspace/
+
+# LaTeX build products
+latex/*.aux
+latex/*.log
+latex/*.nav
+latex/*.out
+latex/*.snm
+latex/*.toc
+latex/*.xdv
+latex/*.fls
+latex/*.fdb_latexmk
+latex/*.synctex.gz

@@ -15,6 +15,23 @@ path = ["skills/gw-presentation/src/**", "examples/**/*.js", "examples/**/*.py",
 SPDX-FileCopyrightText = "2026 Lorena A. Barba"
 SPDX-License-Identifier = "BSD-3-Clause"
 
+# LaTeX Beamer theme: code (the theme and its build scripts), the demo deck, and its PDF
+[[annotations]]
+path = ["latex/beamerthemeGW.sty", "latex/*.py", "latex/gw-theme-demo.tex"]
+SPDX-FileCopyrightText = ["2026 Taeyoung Lee", "2026 Lorena A. Barba (design)"]
+SPDX-License-Identifier = "BSD-3-Clause"
+
+[[annotations]]
+path = ["latex/gw-theme-demo.pdf"]
+SPDX-FileCopyrightText = ["2026 Taeyoung Lee", "2026 Lorena A. Barba (design)", "The George Washington University (embedded logos and graphic elements)"]
+SPDX-License-Identifier = "CC-BY-4.0 AND LicenseRef-GW-Brand-Assets"
+
+# GW brand assets rendered for LaTeX (star backgrounds, chevron ribbon, logos)
+[[annotations]]
+path = ["latex/assets/**"]
+SPDX-FileCopyrightText = "The George Washington University"
+SPDX-License-Identifier = "LicenseRef-GW-Brand-Assets"
+
 # Example decks: text and design (CC BY), embedded deck code (BSD, HTML only), embedded GW logos and graphics (not licensed)
 [[annotations]]
 path = ["examples/**/*.html"]
@@ -34,21 +51,21 @@ SPDX-License-Identifier = "LicenseRef-GW-Brand-Assets"
 
 # Bundled free substitute fonts (SIL Open Font License); each family's OFL text is in skills/gw-presentation/fonts/
 [[annotations]]
-path = ["skills/gw-presentation/fonts/BarlowCondensed-*", "skills/gw-presentation/fonts/OFL-barlowcondensed.txt"]
+path = ["skills/gw-presentation/fonts/BarlowCondensed-*", "skills/gw-presentation/fonts/OFL-barlowcondensed.txt", "latex/fonts/BarlowCondensed-*", "latex/fonts/OFL-barlowcondensed.txt"]
 SPDX-FileCopyrightText = "2017 The Barlow Project Authors (https://github.com/jpt/barlow)"
 SPDX-License-Identifier = "OFL-1.1"
 
 [[annotations]]
-path = ["skills/gw-presentation/fonts/NunitoSans-*", "skills/gw-presentation/fonts/OFL-nunitosans.txt"]
+path = ["skills/gw-presentation/fonts/NunitoSans-*", "skills/gw-presentation/fonts/OFL-nunitosans.txt", "latex/fonts/NunitoSans-*", "latex/fonts/OFL-nunitosans.txt"]
 SPDX-FileCopyrightText = "2016 The Nunito Sans Project Authors (https://github.com/Fonthausen/NunitoSans)"
 SPDX-License-Identifier = "OFL-1.1"
 
 [[annotations]]
-path = ["skills/gw-presentation/fonts/SourceSerif4-*", "skills/gw-presentation/fonts/OFL-sourceserif4.txt"]
+path = ["skills/gw-presentation/fonts/SourceSerif4-*", "skills/gw-presentation/fonts/OFL-sourceserif4.txt", "latex/fonts/SourceSerif4-*", "latex/fonts/OFL-sourceserif4.txt"]
 SPDX-FileCopyrightText = "2014 The Source Serif 4 Project Authors (https://github.com/adobe-fonts/source-serif)"
 SPDX-License-Identifier = "OFL-1.1"
 
 [[annotations]]
-path = ["skills/gw-presentation/fonts/Oswald-*", "skills/gw-presentation/fonts/OFL-oswald.txt"]
+path = ["skills/gw-presentation/fonts/Oswald-*", "skills/gw-presentation/fonts/OFL-oswald.txt", "latex/fonts/Oswald-*", "latex/fonts/OFL-oswald.txt"]
 SPDX-FileCopyrightText = "2016 The Oswald Project Authors (https://github.com/googlefonts/OswaldFont)"
 SPDX-License-Identifier = "OFL-1.1"

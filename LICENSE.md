@@ -4,12 +4,12 @@ This repository holds four kinds of material under different terms. Every file's
 
 | Material | Examples | License |
 |---|---|---|
-| **Code** | the skill's scripts, deck template and CSS theme (`skills/gw-presentation/src/`), example build scripts | [BSD 3-Clause](LICENSES/BSD-3-Clause.txt) |
+| **Code** | the skill's scripts, deck template and CSS theme (`skills/gw-presentation/src/`), example build scripts, the LaTeX Beamer theme and its scripts (`latex/`) | [BSD 3-Clause](LICENSES/BSD-3-Clause.txt) |
 | **Text and design** | `SKILL.md`, `references/`, this README and the docs, and the slide content and design of the example decks | [Creative Commons Attribution 4.0 International (CC BY 4.0)](LICENSES/CC-BY-4.0.txt) |
-| **Free fonts** | `skills/gw-presentation/fonts/` | [SIL Open Font License 1.1](LICENSES/OFL-1.1.txt) — see [Bundled fonts](#bundled-fonts) |
-| **GW brand assets** | logos and graphic elements in `skills/gw-presentation/assets/` (including the pre-rendered images in `assets/pptx/`) and `source-assets/`, and copies of them embedded in the example decks | **Not licensed by this project:** © The George Washington University, all rights reserved; see [the notice](LICENSES/LicenseRef-GW-Brand-Assets.txt) |
+| **Free fonts** | `skills/gw-presentation/fonts/`, `latex/fonts/` | [SIL Open Font License 1.1](LICENSES/OFL-1.1.txt) — see [Bundled fonts](#bundled-fonts) |
+| **GW brand assets** | logos and graphic elements in `skills/gw-presentation/assets/` (including the pre-rendered images in `assets/pptx/`), `latex/assets/` and `source-assets/`, and copies of them embedded in the example decks | **Not licensed by this project:** © The George Washington University, all rights reserved; see [the notice](LICENSES/LicenseRef-GW-Brand-Assets.txt) |
 
-Copyright © 2026 Lorena A. Barba for the code and the text and design.
+Copyright © 2026 Lorena A. Barba for the code and the text and design; the LaTeX theme in `latex/` is © 2026 Taeyoung Lee, after her design.
 
 ## Attribution
 
@@ -23,7 +23,7 @@ The GW logos and graphic elements belong to The George Washington University. Th
 
 ## Bundled fonts
 
-`skills/gw-presentation/fonts/` contains the free substitute fonts — Barlow Condensed, Nunito Sans, Source Serif 4, and Oswald — unmodified except for simpler file names, under the [SIL Open Font License 1.1](LICENSES/OFL-1.1.txt). Each family's copyright and license is in its `OFL-*.txt` file next to the fonts. They are included so previews look right on machines without them.
+`skills/gw-presentation/fonts/` contains the free substitute fonts — Barlow Condensed, Nunito Sans, Source Serif 4, and Oswald — unmodified except for simpler file names, under the [SIL Open Font License 1.1](LICENSES/OFL-1.1.txt). Each family's copyright and license is in its `OFL-*.txt` file next to the fonts. They are included so previews look right on machines without them. `latex/fonts/` holds static instances of the same fonts, cut from the variable fonts with fontTools (see `latex/make-static-fonts.py`), under the same license.
 
 ## Not included here
 

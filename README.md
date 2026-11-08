@@ -6,7 +6,7 @@ Ask your agent for "GW slides on …", "a GW-branded lecture deck", or "a PowerP
 
 > **Status:** refactor in progress toward the current Agent Skills specification. The April 2026 version of the skill is in the repository's first commit.
 
-## Two output formats
+## Two output formats, and a LaTeX theme
 
 | | HTML deck (default) | PowerPoint (.pptx) |
 |---|---|---|
@@ -15,6 +15,8 @@ Ask your agent for "GW slides on …", "a GW-branded lecture deck", or "a PowerP
 | **Fonts** | Brand fonts if installed, free Google Fonts otherwise — automatically, per viewer | Chosen when the deck is built: brand fonts or free substitutes |
 | **Editing later** | Ask the agent to change it | Edit in PowerPoint; added slides stay on brand |
 | **Ask for it with** | Nothing special ("make me GW slides …") | "…as a PowerPoint", "…a .pptx" |
+
+A third option, for people who write slides by hand: the **LaTeX Beamer theme** in [`latex/`](latex/) gives the same look (`\usetheme{GW}`) and is not part of the skill. See [its README](latex/README.md).
 
 ### HTML decks
 
@@ -122,6 +124,7 @@ The skill is the folder `skills/gw-presentation/`:
 | Path | Contents |
 |---|---|
 | `skills/gw-presentation/` | The skill: `SKILL.md`, `LICENSE.md`, `references/` (brand, layouts, PowerPoint), `src/` (deck template, CSS theme, PowerPoint helper, build, render and font-install scripts), `assets/` (official brand SVG/PNG files, and pre-rendered images for PowerPoint), `fonts/` (the free substitute fonts) |
+| `latex/` | A Beamer theme with the same look, for hand-written LaTeX slides: `beamerthemeGW.sty`, a demo deck, vector assets and static fonts derived from the skill's files by two scripts |
 | `examples/` | Sample decks: `what-is-a-skill/` (HTML) and `reproducible-research/` (HTML, plus PowerPoint with its build script), made with the current skill; `skill-workflow/` and `early-test/` (April 2026 versions, with the original PowerPoint scripts) |
 | `LICENSE.md`, `LICENSES/`, `REUSE.toml` | Licensing: summary, full license texts, and the per-file record |
 | `docs/HISTORY.md` | Project log of how the skill was built |

@@ -1,0 +1,133 @@
+% !TeX program = xelatex
+% Every component of beamerthemeGW.sty, one per slide, with placeholder text.
+% Compile twice with XeLaTeX from this folder.
+\documentclass[aspectratio=169]{beamer}
+\usetheme{GW}
+\title{GW Beamer theme}
+\author{Presenter Name}
+\date{Month 2026}
+
+\begin{document}
+
+% A. Cover: eyebrow, title, subtitle, and either a date or a [byline].
+\gwcoverframe[Presenter Name\\Department or Unit]
+    {Event name $\cdot$ \insertdate}{A GW-branded deck,\\made with Beamer}
+    {One idea per slide, restraint, and strong contrast}{}
+
+% B. Big idea, light: the one sentence the audience should leave with.
+\gwbigframe{State the single most important point of the talk in one sentence.}
+    {An optional gloss in the serif accent, for the nuance the sentence leaves out.}
+
+% I. Standard content: eyebrow (\framesubtitle), display title, buff rule.
+\begin{frame}[t]{A standard content slide with a short title}
+    \framesubtitle{Section or topic}
+    \begin{itemize}
+        \setlength{\itemsep}{0.25cm}
+        \item Square buff bullets, four items at most
+        \item Each item one line, each line one idea
+        \item A sub-level exists \begin{itemize}\item but is rarely needed\end{itemize}
+    \end{itemize}
+    \vspace{0.3cm}
+    \begin{enumerate}
+        \setlength{\itemsep}{0.2cm}
+        \item Numbered lists use Potomac display numerals
+        \item and the same body type
+    \end{enumerate}
+\end{frame}
+
+% F. Tiled content: 2 or 3 \gwcard panels; \gwstat for a number with a label.
+\begin{frame}[t]{Three parallel ideas as tiles}
+    \framesubtitle{Tiled content}
+    \vspace{0.2cm}
+    \noindent
+    \gwcard{\dimexpr0.333\textwidth-0.9cm\relax}{\gwlabel{First tile}\vspace{0.1cm}{\gwtilefont One or two sentences. The label above is uppercase and tracked.\par}}\hfill
+    \gwcard{\dimexpr0.333\textwidth-0.9cm\relax}{\gwlabel{Second tile}\vspace{0.1cm}{\gwtilefont Tiles share a Buff 20\% fill and a buff top rule.\par}}\hfill
+    \gwcard{\dimexpr0.333\textwidth-0.9cm\relax}{\gwlabel{Third tile}\vspace{0.1cm}{\gwtilefont Keep the three the same height by writing similar lengths.\par}}\par
+    \vspace{0.45cm}
+    \gwstat{0.3\textwidth}{gwblue}{42}{Stat tile}{}\quad
+    \gwstat{0.3\textwidth}{gwaccentblue}{\$1.2M}{With a gloss}{serif, Potomac number}\par
+    \vspace{0.3cm}
+    \gwcaption{A caption line in the quiet gray, for sources and footnotes.}
+\end{frame}
+
+% E. Stat callout: big numbers joined by operators or rules.
+\begin{frame}[t]{Big numbers tell the story on their own}
+    \framesubtitle{Stat callout}
+    \vspace{0.6cm}
+    \centering
+    \gwbignumber[gwaccentblue]{12}{First input}{}%
+    \gwstatop{+}%
+    \gwbignumber[gwaccentblue]{30}{Second input}{}%
+    \gwstatop{=}%
+    \gwbignumber{42}{The result}{a one-line gloss in the serif accent}\par
+    \vspace{0.6cm}
+    \gwbignumber{3$\times$}{Alternative}{}\gwstatrule\gwbignumber{75\%}{Side by side}{}\par
+\end{frame}
+
+% D. Split: a Buff 20% visual panel beside a text column; [right] mirrors it.
+\gwsplitframe{%
+    \gwshare{75\%}{of the total\\goes here}
+    \vspace{0.4cm}
+    \gwshare*{25\%}{the remainder\\goes there}
+}{%
+    \gweyebrow{Split layout}\par\vspace{0.15cm}
+    \gwsplittitle{A visual on one side, the words on the other}
+    The visual half takes a share pair, a figure, a formula or a photo;
+    the text half takes a title and a few lines.\par\vspace{0.2cm}
+    Use \texttt{[right]} to put the visual on the right.
+}
+
+\gwsplitframe[right]{%
+    \gwformula{rate =\\[0.2cm]\gwfrac{weight $\times$ pool}{people in the category}}
+    \gwformulanote{A formula set in the display face, with a caption-sized note under it.}
+}{%
+    \gweyebrow{Split, visual on the right}\par\vspace{0.15cm}
+    \gwsplittitle{A title that may run to two lines}
+    \gwsplitlist{
+        \item A short list in the text column.
+        \item Two or three items, no more.
+    }
+}
+
+% Bars and a legend.
+\begin{frame}[t]{Horizontal bars compare a handful of categories}
+    \framesubtitle{Bars}
+    \begin{gwbars}
+        \gwbar{Largest category}{1}{30\%}
+        \gwbar[gwblue]{Emphasised row}{0.667}{20\%}
+        \gwbar[gwblue]{Another emphasised row}{0.667}{20\%}
+        \gwbar{A smaller one}{0.333}{10\%}
+        \gwbar{The smallest}{0.167}{5\%}
+    \end{gwbars}
+    \gwlegend{\gwlegenditem{gwblue}{Emphasised}\gwlegenditem{gwbuffhalf}{Everything else}A note about the data}
+\end{frame}
+
+% Ornaments and type helpers, one element per real slide.
+\begin{frame}[t]{Ornaments and secondary type}
+    \framesubtitle{For reference; use one per slide}
+    \gwchevronribbon\par\vspace{0.4cm}
+    \begin{columns}[T]
+    \column{0.45\textwidth}
+        \centering
+        \gwgatecrossbar\par\vspace{0.15cm}{\gwcaptionfont gate crossbar}\par\vspace{0.35cm}
+        \gwstaraccent\par\vspace{0.1cm}{\gwcaptionfont star accent}\par
+    \column{0.45\textwidth}
+        \centering
+        {\gwdisplayheavy\fontsize{14}{14}\selectfont\color{gwblue}HEAVY 2026}\par\vspace{0.1cm}{\gwcaptionfont Oswald, for stamps and numerals}\par\vspace{0.3cm}
+        {\gwaccent\itshape The serif accent, for glosses and quotes.}\par\vspace{0.3cm}
+        \colorbox{gwblue}{\gwreversed{Reversed}\ \gwreversedsecondary{secondary}}\par\vspace{0.3cm}
+        {\color{gwrowhouse}\rule{0.4cm}{0.4cm}}{\color{gwblossom}\rule{0.4cm}{0.4cm}}{\color{gwparchment}\rule{0.4cm}{0.4cm}}{\color{gwbluefog}\rule{0.4cm}{0.4cm}}{\color{gwpatina}\rule{0.4cm}{0.4cm}}\par
+        {\gwcaptionfont secondary accents: one per deck}\par
+    \end{columns}
+\end{frame}
+
+% G. Section divider.
+\gwdividerframe{Part two}{A section divider, with its label above}
+
+% B. Big idea, dark: for the closing statement.
+\gwbigframe[dark]{The dark big idea closes the deck's dark--light--dark sandwich.}
+    {It carries the logo and echoes the cover's star pattern.}
+
+% Closing.
+\gwclosingframe{Thank you}{Questions \& discussion}
+\end{document}

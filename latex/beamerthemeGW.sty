@@ -1,0 +1,423 @@
+% beamerthemeGW.sty -- the gw-presentation look for LaTeX Beamer (16:9).
+%
+% Usage:  \documentclass[aspectratio=169]{beamer}
+%         \usetheme{GW}
+%
+% Compile with XeLaTeX or LuaLaTeX, from a folder that holds this file next
+% to assets/ and fonts/ (or set \gwthemepath, see below). Body text uses
+% Avenir Next when it is installed and the bundled Nunito Sans otherwise;
+% display text is always the bundled Barlow Condensed, the accent Source
+% Serif 4, the heavy display Oswald. pdfLaTeX also works, with TeX Gyre
+% Heros / Heros Condensed / Termes in place of all of them.
+%
+% The layouts, proportions and type scale follow the HTML deck template in
+% skills/gw-presentation (1280 x 720 px -> 16 x 9 cm, so 80 px = 1 cm).
+%
+% Provides (see gw-theme-demo.tex for every component in use):
+%   colors      gwblue gwbuff gwaccentblue gwnavy gwtext gwcaption
+%               tints gwpalebuff gwbuffhalf gwbuffstrong gwpaleblue
+%                     gwpotomachalf gwpotomacstrong
+%               secondary accents (at most one per deck) gwrowhouse gwblossom
+%                     gwparchment gwbluefog gwpatina
+%   fonts       \gwdisplay \gwdisplayheavy \gwaccent \gwtracked{spacing}{text}
+%               \gweyebrowfont \gwlabelfont \gwtilefont \gwcaptionfont
+%   text        \gweyebrow{...} \gwlabel{...} \gwcaption{...}
+%               \gwreversed{...} \gwreversedsecondary{...}
+%   frames      \gwcoverframe[byline]{eyebrow}{title}{subtitle}{date}
+%               \gwbigframe[dark]{sentence}{gloss}
+%               \gwsplitframe[right]{visual side}{text side}
+%               \gwdividerframe{label}{title}
+%               \gwclosingframe{title}{gloss}
+%   blocks      \gwcard[inner sep]{width}{content}
+%               \gwstat{width}{number color}{number}{label}{gloss}
+%               \gwbignumber[color]{number}{label}{gloss}  \gwstatop{+}  \gwstatrule
+%               \gwshare{number}{label}  \gwshare*{number}{label}  (large / small)
+%               \gwbars  \gwbar[fill color]{label}{fraction}{value}  \endgwbars
+%               \gwlegend{\gwlegenditem{color}{text} ...}
+%               \gwformula{...}  \gwfrac{num}{den}  \gwformulanote{...}
+%   ornaments   \gwchevronribbon[width]  \gwgatecrossbar  \gwstaraccent
+%   \framesubtitle{...} is set as an uppercase Potomac eyebrow above the title.
+%
+% Where the theme's files are, relative to the compile directory; redefine
+% before \usetheme{GW} to keep the theme in a shared folder:
+%   \providecommand{\gwthemepath}{../gw-presentation/latex/}
+\providecommand{\gwthemepath}{}
+
+\mode<presentation>
+
+\RequirePackage{iftex}
+\RequirePackage{tikz}
+\usetikzlibrary{shapes.geometric}
+
+% ---------------------------------------------------------------- Fonts
+\usefonttheme{professionalfonts}
+\ifPDFTeX
+    \RequirePackage[T1]{fontenc}
+    \RequirePackage{tgheros}
+    \RequirePackage{tgtermes}
+    \newcommand{\gwdisplay}{\fontfamily{qhv}\fontseries{bc}\selectfont}
+    \newcommand{\gwdisplayheavy}{\fontfamily{qhv}\fontseries{bc}\selectfont}
+    \newcommand{\gwaccent}{\rmfamily}
+    \newcommand{\gwtracked}[2]{#2}
+\else
+    \RequirePackage{fontspec}
+    % Body: the brand font if installed, otherwise the free substitute.
+    \IfFontExistsTF{Avenir Next}{\setsansfont{Avenir Next}}{%
+        \setsansfont[
+            Path=\gwthemepath fonts/,
+            UprightFont=NunitoSans-Regular.ttf,
+            BoldFont=NunitoSans-Bold.ttf,
+            ItalicFont=NunitoSans-Italic.ttf,
+            BoldItalicFont=NunitoSans-BoldItalic.ttf
+        ]{NunitoSans-Regular.ttf}}
+    % Display: Barlow Condensed, the free substitute for Gazzetta.
+    \newfontfamily\gwdisplay[
+        Path=\gwthemepath fonts/,
+        UprightFont=BarlowCondensed-SemiBold.ttf,
+        BoldFont=BarlowCondensed-Bold.ttf,
+        ItalicFont=BarlowCondensed-SemiBoldItalic.ttf
+    ]{BarlowCondensed-SemiBold.ttf}
+    % Heavy display: Oswald, for all-caps numerals and stamps only.
+    \newfontfamily\gwdisplayheavy[
+        Path=\gwthemepath fonts/,
+        UprightFont=Oswald-Medium.ttf,
+        BoldFont=Oswald-SemiBold.ttf
+    ]{Oswald-Medium.ttf}
+    % Accent: Source Serif 4.
+    \newfontfamily\gwaccent[
+        Path=\gwthemepath fonts/,
+        UprightFont=SourceSerif4-Regular.ttf,
+        ItalicFont=SourceSerif4-Italic.ttf
+    ]{SourceSerif4-Regular.ttf}
+    % Letter spacing in 1/100 em, for uppercase eyebrows and labels.
+    \newcommand{\gwtracked}[2]{{\addfontfeature{LetterSpace=#1}#2}}
+\fi
+
+% --------------------------------------------------------------- Colors
+% GW digital brand palette: https://communications.gwu.edu/brand-guidelines/color-palette
+\definecolor{gwblue}{HTML}{033C5A}
+\definecolor{gwbuff}{HTML}{D6BF91}
+\definecolor{gwaccentblue}{HTML}{0075C8} % Potomac
+\definecolor{gwnavy}{HTML}{00223E}      % Navy Yard
+\definecolor{gwpalebuff}{HTML}{F6F1E8}  % GW Buff 20%
+\definecolor{gwbuffhalf}{HTML}{E8DDC6}  % GW Buff 50%
+\definecolor{gwpaleblue}{HTML}{CCE3F4}  % Potomac 20%
+\definecolor{gwbuffstrong}{HTML}{DAC8A3}    % GW Buff 80%
+\definecolor{gwpotomachalf}{HTML}{7FBAE3}   % Potomac 50%
+\definecolor{gwpotomacstrong}{HTML}{3391D3} % Potomac 80%
+\definecolor{gwtext}{HTML}{1E1E1E}
+\definecolor{gwcaption}{HTML}{666666}
+% Secondary accents: use at most one per deck.
+\definecolor{gwrowhouse}{HTML}{EF4343}
+\definecolor{gwblossom}{HTML}{D1A0B9}
+\definecolor{gwparchment}{HTML}{FFEFAE}
+\definecolor{gwbluefog}{HTML}{52C9E8}
+\definecolor{gwpatina}{HTML}{ADCAB8}
+
+% ----------------------------------------------------------- Type scale
+% px at 1280 wide -> pt at 16 cm wide: title 50 -> 17.7, eyebrow 14 -> 5.2,
+% list 27 -> 9.6, tile body 21 -> 7.4, tile label 19 -> 6.7, caption 17 -> 6.
+\newcommand{\gweyebrowfont}{\fontsize{5.2}{6.2}\selectfont\bfseries}
+\newcommand{\gwlabelfont}{\fontsize{6.7}{8.2}\selectfont\bfseries}
+\newcommand{\gwtilefont}{\fontsize{7.4}{11}\selectfont}
+\newcommand{\gwcaptionfont}{\fontsize{6}{9}\selectfont\color{gwcaption}}
+% Uppercase tracked eyebrow in Potomac.
+\newcommand{\gweyebrow}[1]{{\gweyebrowfont\color{gwaccentblue}\gwtracked{12}{\MakeUppercase{#1}}}}
+% Uppercase tracked label in GW Blue; ends its paragraph to keep tight leading.
+\newcommand{\gwlabel}[1]{{\gwlabelfont\color{gwblue}\gwtracked{5}{\MakeUppercase{#1}}\par}}
+\newcommand{\gwcaption}[1]{{\gwcaptionfont #1\par}}
+% Reversed type for dark backgrounds.
+\newcommand{\gwreversed}[1]{{\color{white}#1}}
+\newcommand{\gwreversedsecondary}[1]{{\color{gwbuff}#1}}
+
+% ------------------------------------------------------- Beamer settings
+\setbeamersize{text margin left=1cm,text margin right=1cm}
+\setbeamerfont{title}{family=\gwdisplay,series=\mdseries,size=\fontsize{28}{30}\selectfont}
+\setbeamerfont{frametitle}{family=\gwdisplay,series=\mdseries,size=\fontsize{17.7}{19.5}\selectfont}
+\setbeamerfont{framesubtitle}{family=\sffamily,series=\bfseries,size=\fontsize{5.2}{6.2}\selectfont}
+\setbeamercolor{structure}{fg=gwblue}
+\setbeamercolor{title}{fg=gwblue}
+\setbeamercolor{frametitle}{fg=gwblue}
+\setbeamercolor{framesubtitle}{fg=gwaccentblue}
+\setbeamercolor{normal text}{fg=gwtext,bg=white}
+\setbeamercolor{footline}{fg=gwcaption}
+\setbeamercolor{caption name}{fg=gwblue}
+\setbeamercolor{emph}{fg=gwblue}
+\setbeamercolor{enumerate subitem}{fg=gwaccentblue}
+\setbeamercolor{enumerate subsubitem}{fg=gwaccentblue}
+% Bullets: small buff squares. Numbers: Potomac display numerals.
+\setbeamertemplate{itemize item}{\raisebox{0.12em}{\color{gwbuff}\rule{0.11cm}{0.11cm}}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.15em}{\color{gwbuff}\rule{0.08cm}{0.08cm}}}
+\setbeamertemplate{itemize subsubitem}{\color{gwbuff}$-$}
+\setbeamertemplate{enumerate item}{%
+    {\gwdisplay\bfseries\fontsize{14}{14}\selectfont\color{gwaccentblue}\insertenumlabel}}
+\setbeamertemplate{navigation symbols}{%
+    {\fontsize{5}{6}\selectfont\color{gwcaption}%
+     \insertframenumber/\inserttotalframenumber}\hspace*{0.6cm}%
+    \vspace{0.45cm}%
+}
+\setbeamercovered{transparent}
+\renewcommand<>{\emph}[1]{{\usebeamercolor[fg]{emph}\only#2{\itshape\bfseries}#1}}
+
+% Frame heading: 0.7 cm top inset, optional eyebrow, display title, 1 cm buff rule.
+\makeatletter
+\setbeamertemplate{frametitle}{%
+    \nointerlineskip
+    \begin{beamercolorbox}[wd=\paperwidth,sep=0pt]{frametitle}
+        \hspace*{1cm}%
+        \begin{minipage}{\dimexpr\paperwidth-2cm\relax}
+            \raggedright\parskip0pt
+            \vspace*{0.7cm}
+            \ifx\insertframesubtitle\@empty\else
+                {\usebeamerfont{framesubtitle}\usebeamercolor[fg]{framesubtitle}%
+                 \gwtracked{12}{\MakeUppercase{\insertframesubtitle}}\par}%
+                \vspace{0.11cm}
+            \fi
+            {\usebeamerfont{frametitle}\usebeamercolor[fg]{frametitle}%
+             \insertframetitle\par}%
+            \vspace{0.17cm}
+            {\color{gwbuff}\hrule width1cm height1.06pt}%
+            \vspace{0.12cm}
+        \end{minipage}%
+    \end{beamercolorbox}%
+}
+\makeatother
+
+% ---------------------------------------------------------- Full-bleed frames
+% Star-pattern backgrounds (assets/stars-*.pdf, 16:9, made by make-assets.py).
+\newcommand{\gwstarbackground}[1]{%
+    \node[inner sep=0pt] at (current page.center)
+        {\includegraphics[width=\paperwidth,height=\paperheight]{\gwthemepath assets/#1}};%
+}
+% GW Engineering lockup, reversed, bottom left: first and last slides only.
+\newcommand{\gwlogo}{%
+    \node[anchor=south west,inner sep=0pt]
+        at ([xshift=0.7cm,yshift=0.6cm]current page.south west)
+        {\includegraphics[width=2.75cm]{\gwthemepath assets/logo-seas-reversed.png}};%
+}
+
+% \gwcoverframe[byline]{eyebrow}{title}{subtitle}{date}: Navy Yard cover with
+% stars. A byline (use \\ for lines) replaces the date at bottom right; put the
+% date in the eyebrow then, as the HTML cover does.
+\newcommand{\gwcoverframe}[5][]{%
+    \begingroup
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain,noframenumbering]
+        \begin{tikzpicture}[remember picture,overlay]
+            \gwstarbackground{stars-navy-yard.pdf}
+            \node[anchor=west,inner sep=0pt]
+                at ([xshift=1.2cm,yshift=-3.75cm]current page.north west) {%
+                \begin{minipage}{10.75cm}
+                    \raggedright
+                    {\fontsize{5}{6}\selectfont\bfseries\color{gwbuff}\gwtracked{14}{\MakeUppercase{#2}}\par}
+                    \vspace{0.28cm}
+                    {\gwdisplay\fontsize{28.3}{29.7}\selectfont\color{white}#3\par}
+                    \vspace{0.30cm}
+                    {\fontsize{7.8}{11.3}\selectfont\color{gwbuff}#4\par}
+                \end{minipage}};
+            \gwlogo
+            \node[anchor=south east,inner sep=0pt,text=gwbuff,align=right,font={\fontsize{5.3}{8}\selectfont}]
+                at ([xshift=-1.2cm,yshift=0.7cm]current page.south east)
+                {\if\relax\detokenize{#1}\relax #5\else #1\fi};
+            \fill[gwbuff] (current page.south west) rectangle ([yshift=0.075cm]current page.south east);
+        \end{tikzpicture}
+    \end{frame}
+    \endgroup
+    \setcounter{framenumber}{0}%
+}
+
+% \gwbigframe[dark]{sentence}{gloss}: one display sentence, short buff rule,
+% serif gloss. [dark] sets it on GW Blue with stars and the logo.
+\newcommand{\gwbigframe}[3][]{%
+    \begingroup
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain,noframenumbering]
+        \begin{tikzpicture}[remember picture,overlay]
+            \if\relax\detokenize{#1}\relax
+                \colorlet{gwbigfg}{gwblue}\colorlet{gwbigloss}{gwblue}%
+            \else
+                \gwstarbackground{stars-gw-blue.pdf}
+                \colorlet{gwbigfg}{white}\colorlet{gwbigloss}{gwbuff}%
+                \gwlogo
+            \fi
+            \node[align=center,text width=12.25cm,text=gwbigfg,font={\gwdisplay\fontsize{21.3}{23.8}\selectfont\hyphenpenalty=10000}]
+                at ([yshift=0.45cm]current page.center) {#2};
+            \fill[gwbuff]
+                ([xshift=-0.625cm,yshift=-0.55cm]current page.center) rectangle
+                ([xshift=0.625cm,yshift=-0.5875cm]current page.center);
+            \node[anchor=north,align=center,text width=10.25cm,text=gwbigloss,font={\gwaccent\itshape\fontsize{7.8}{11.3}\selectfont}]
+                at ([yshift=-0.95cm]current page.center) {#3};
+        \end{tikzpicture}
+    \end{frame}
+    \endgroup
+}
+
+% \gwsplitframe[right]{visual side}{text side}: half-and-half layout. The visual
+% half is a Buff 20% panel with a 3 px buff border, on the left unless [right].
+% The text side usually starts with \gweyebrow{...}\par and a title set with
+% \gwsplittitle{...}; \gwsplitlist{\item ...} gives the square-bullet list.
+\newcommand{\gwsplittitle}[1]{{\gwdisplay\fontsize{16.3}{17.9}\selectfont\color{gwblue}#1\par}\vspace{0.25cm}}
+\newcommand{\gwsplitlist}[1]{\begin{itemize}\setlength{\itemsep}{0.17cm}\fontsize{7.4}{10.4}\selectfont #1\end{itemize}}
+\newcommand{\gwsplitframe}[3][]{%
+    \begingroup
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain,noframenumbering]
+        \begin{tikzpicture}[remember picture,overlay]
+            \if\relax\detokenize{#1}\relax
+                \fill[gwpalebuff] (current page.north west) rectangle ([xshift=0.5\paperwidth]current page.south west);
+                \fill[gwbuff] ([xshift=0.5\paperwidth-0.0375cm]current page.north west) rectangle ([xshift=0.5\paperwidth]current page.south west);
+                \node[anchor=center] at ([xshift=0.25\paperwidth]current page.west)
+                    {\begin{minipage}{\dimexpr0.5\paperwidth-1.4cm\relax}\centering #2\end{minipage}};
+                \node[anchor=center] at ([xshift=-0.25\paperwidth]current page.east)
+                    {\begin{minipage}{\dimexpr0.5\paperwidth-1.8cm\relax}\raggedright\fontsize{7.4}{11}\selectfont #3\end{minipage}};
+            \else
+                \fill[gwpalebuff] ([xshift=0.5\paperwidth]current page.north west) rectangle (current page.south east);
+                \fill[gwbuff] ([xshift=0.5\paperwidth]current page.north west) rectangle ([xshift=0.5\paperwidth+0.0375cm]current page.south west);
+                \node[anchor=center] at ([xshift=-0.25\paperwidth]current page.east)
+                    {\begin{minipage}{\dimexpr0.5\paperwidth-1.4cm\relax}\centering #2\end{minipage}};
+                \node[anchor=center] at ([xshift=0.25\paperwidth]current page.west)
+                    {\begin{minipage}{\dimexpr0.5\paperwidth-1.8cm\relax}\raggedright\fontsize{7.4}{11}\selectfont #3\end{minipage}};
+            \fi
+        \end{tikzpicture}
+    \end{frame}
+    \endgroup
+}
+
+% \gwdividerframe{label}{title}: GW Blue section divider.
+\newcommand{\gwdividerframe}[2]{%
+    \begingroup
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain,noframenumbering]
+        \begin{tikzpicture}[remember picture,overlay]
+            \gwstarbackground{stars-gw-blue.pdf}
+            \node[text=gwbuff,font={\fontsize{5}{6}\selectfont\bfseries}]
+                at ([yshift=0.75cm]current page.center) {\gwtracked{14}{\MakeUppercase{#1}}};
+            \node[text=white,align=center,text width=11cm,font={\gwdisplay\itshape\fontsize{21}{23}\selectfont}]
+                at ([yshift=-0.1cm]current page.center) {#2};
+        \end{tikzpicture}
+    \end{frame}
+    \endgroup
+}
+
+% \gwclosingframe{title}{gloss}: GW Blue closing with logo.
+\newcommand{\gwclosingframe}[2]{%
+    \begingroup
+    \setbeamertemplate{navigation symbols}{}
+    \begin{frame}[plain,noframenumbering]
+        \begin{tikzpicture}[remember picture,overlay]
+            \gwstarbackground{stars-gw-blue.pdf}
+            \node[text=white,align=center,text width=12cm,font={\gwdisplay\fontsize{26}{29}\selectfont\hyphenpenalty=10000}]
+                at ([yshift=0.55cm]current page.center) {#1};
+            \fill[gwbuff]
+                ([xshift=-0.625cm,yshift=-0.20cm]current page.center) rectangle
+                ([xshift=0.625cm,yshift=-0.237cm]current page.center);
+            \node[text=gwbuff,align=center,text width=12cm,font={\gwaccent\itshape\fontsize{7.8}{11.3}\selectfont}]
+                at ([yshift=-0.75cm]current page.center) {#2};
+            \gwlogo
+        \end{tikzpicture}
+    \end{frame}
+    \endgroup
+}
+
+% ----------------------------------------------------------------- Blocks
+% \gwcard[inner sep]{inner width}{content}: Buff 20% panel with a buff top rule.
+\newcommand{\gwcard}[3][0.3cm]{%
+    \begin{tikzpicture}[baseline=(current bounding box.north)]
+        \node[fill=gwpalebuff,draw=none,inner sep=#1,outer sep=0pt] (gwcard)
+            {\begin{minipage}{#2}#3\end{minipage}};
+        \fill[gwbuff] (gwcard.north west) rectangle ([yshift=0.0625cm]gwcard.north east);
+    \end{tikzpicture}%
+}
+% \gwstat{outer width}{number color}{number}{label}{gloss}: big-number tile.
+\newcommand{\gwstat}[5]{%
+    \gwcard[0.25cm]{\dimexpr#1-0.5cm\relax}{%
+        \begin{minipage}[t][1.45cm][c]{\linewidth}
+            \centering
+            {\gwdisplay\bfseries\fontsize{30}{30}\selectfont\color{#2}#3\par}
+            \vspace{0.14cm}
+            \gwlabel{#4}%
+            \if\relax\detokenize{#5}\relax\else
+                \vspace{0.04cm}{\gwaccent\itshape\fontsize{6.7}{8}\selectfont\color{gwblue}#5\par}%
+            \fi
+        \end{minipage}}%
+}
+
+
+% Stats row: \gwbignumber[color]{number}{label}{gloss}, joined by \gwstatop{+}
+% or \gwstatrule inside a centered line. Colors: gwblue (default), gwaccentblue.
+\newcommand{\gwbignumber}[4][gwblue]{%
+    \begin{minipage}[t]{3.75cm}
+        \centering
+        {\gwdisplay\bfseries\fontsize{39}{39}\selectfont\color{#1}#2\par}
+        \vspace{0.15cm}
+        \gwlabel{#3}%
+        \if\relax\detokenize{#4}\relax\else
+            \vspace{0.04cm}{\gwaccent\itshape\fontsize{6.7}{8}\selectfont\color{gwblue}#4\par}%
+        \fi
+    \end{minipage}}
+\newcommand{\gwstatop}[1]{%
+    \begin{minipage}[t]{1cm}\centering
+        \vspace{0.1cm}{\gwdisplay\fontsize{24.8}{24.8}\selectfont\color{gwbuffstrong}#1\par}
+    \end{minipage}}
+\newcommand{\gwstatrule}{%
+    \begin{minipage}[t]{0.8cm}\centering
+        \vspace{0.05cm}{\color{gwbuffhalf}\rule{0.025cm}{1.75cm}}
+    \end{minipage}}
+
+% Share pair: \gwshare{75\%}{to the school\\that teaches} and the smaller
+% Potomac \gwshare*{25\%}{...} stacked with \par\vspace.
+\makeatletter
+\newcommand{\gwshare}{\@ifstar{\gw@share{gwaccentblue}{28.3}{2.4cm}}{\gw@share{gwblue}{42.5}{2.4cm}}}
+\newcommand{\gw@share}[5]{%
+    \noindent\makebox[#3][r]{\gwdisplay\bfseries\fontsize{#2}{#2}\selectfont\color{#1}#4}%
+    \hspace{0.28cm}%
+    \begin{minipage}[b]{3cm}
+        \raggedright\fontsize{6.4}{8.6}\selectfont\bfseries\color{gwblue}\gwtracked{5}{\MakeUppercase{#5}}\par
+    \end{minipage}\par}
+\makeatother
+
+% Horizontal bars: \begin{gwbars} \gwbar[gwblue]{label}{0.667}{20\%} ... \end{gwbars}
+% Default fill is Buff 50%; pass gwblue for the emphasised rows. Fraction is
+% the bar length relative to the longest bar.
+\newlength{\gwbarlabelwidth}\setlength{\gwbarlabelwidth}{5cm}
+\newlength{\gwbartrackwidth}
+\newenvironment{gwbars}{%
+    \setlength{\gwbartrackwidth}{\dimexpr\linewidth-\gwbarlabelwidth-1.5cm\relax}%
+    \par\noindent\begin{minipage}{\linewidth}}{\end{minipage}\par}
+\newcommand{\gwbar}[4][gwbuffhalf]{%
+    \noindent\makebox[\gwbarlabelwidth][r]{\fontsize{7}{8}\selectfont #2}%
+    \hspace{0.25cm}%
+    \makebox[\gwbartrackwidth][l]{\color{#1}\rule[-0.1cm]{#3\gwbartrackwidth}{0.375cm}}%
+    \hspace{0.25cm}%
+    \makebox[0.8cm][l]{\gwdisplay\bfseries\fontsize{10.6}{10.6}\selectfont\color{gwblue}#4}%
+    \par\vspace{0.175cm}}
+% Legend: \gwlegend{\gwlegenditem{gwblue}{Counted by people} \gwlegenditem{gwbuffhalf}{...}}
+\newcommand{\gwlegenditem}[2]{{\color{#1}\rule[-0.03cm]{0.2cm}{0.2cm}}\hspace{0.1cm}#2\hspace{0.4cm}}
+\newcommand{\gwlegend}[1]{\par\vspace{0.2cm}{\fontsize{5.7}{7}\selectfont\color{gwcaption}#1\par}}
+
+% Formula: \gwformula{charge per head = \gwfrac{weight $\times$ pool}{people}} and
+% a caption-sized \gwformulanote{...} below it.
+\RequirePackage{calc}
+\newcommand{\gwfrac}[2]{%
+    \begin{tabular}{@{}c@{}}#1\\[-0.05cm]{\color{gwblue}\rule{\widthof{#1}}{1pt}}\\#2\end{tabular}}
+\newcommand{\gwformula}[1]{{\centering\gwdisplay\fontsize{12.7}{15.9}\selectfont\color{gwblue}#1\par}}
+\newcommand{\gwformulanote}[1]{\par\vspace{0.2cm}{\centering\fontsize{6}{8.7}\selectfont\color{gwcaption}#1\par}}
+
+% Ornaments.
+% Chevron ribbon: a 12 px (0.15 cm) band of buff chevrons tiled across the
+% given width (default \linewidth). Points right; never rotate or mirror.
+\newcommand{\gwchevronribbon}[1][\linewidth]{%
+    \begin{tikzpicture}
+        \clip (0,0) rectangle (#1,0.15cm);
+        \foreach \i in {0,...,12}{%
+            \node[anchor=south west,inner sep=0pt] at (\i*1.95cm,0)
+                {\includegraphics[height=0.15cm]{\gwthemepath assets/chevron-ribbon-buff.pdf}};}
+    \end{tikzpicture}}
+% Gate crossbar: a single dotted buff line, 2.5 cm; one per slide.
+\newcommand{\gwgatecrossbar}{%
+    \tikz\draw[gwbuff,line width=0.7pt,dash pattern=on 0.11cm off 0.075cm] (0,0) -- (2.5cm,0);}
+% Five-pointed star accent, one tip up, 0.35 cm; never repeat into a pattern.
+\newcommand{\gwstaraccent}{%
+    \tikz\node[star,star points=5,star point ratio=2.4,fill=gwbuff,inner sep=0pt,minimum size=0.35cm]{};}
+
+\mode<all>
